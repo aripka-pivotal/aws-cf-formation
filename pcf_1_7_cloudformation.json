@@ -32,11 +32,6 @@
       "Default": "https://s3.amazonaws.com/ops-man-references/pcf-cloudformation/1.7.0/ops-manager.json",
       "Description": "S3 Location for OpsManager CloudFormation Template"
     },
-    "09ElbPrefix": {
-      "Type": "String",
-      "Default": "",
-      "Description": "Prefix for the name of the ELBs generated. NOTE: Leave empty to use default prefix of AWS::StackName"
-    },
     "10AllowHttpOnElb": {
       "Type": "String",
       "Default": "true",
@@ -45,13 +40,6 @@
     }
   },
   "Conditions": {
-    "ElbPrefixProvided": {
-      "Fn::Not": [
-        {
-          "Fn::Equals" : [{"Ref" : "09ElbPrefix" }, ""]
-        }
-      ]
-    },
     "AllowHTTPTrafficOnELB": {
       "Fn::Equals" : [{"Ref" : "10AllowHttpOnElb" }, "true"]
     }
@@ -114,16 +102,8 @@
         "ConnectionSettings": {
           "IdleTimeout": 3600
         },
-        "LoadBalancerName": { "Fn::Join" : [
-          "",
-          [ { "Fn::If" : [
-              "ElbPrefixProvided",
-              { "Ref" : "09ElbPrefix" },
-              { "Ref" : "AWS::StackName" }
-            ]},
-           "-pcf-elb"
-          ]
-        ] },
+        "LoadBalancerName": "aripka-demopcf-elb"
+        ,
         "Listeners": { "Fn::If" : [
           "AllowHTTPTrafficOnELB",
           [
@@ -205,16 +185,8 @@
         "ConnectionSettings": {
           "IdleTimeout": 3600
         },
-        "LoadBalancerName": { "Fn::Join" : [
-          "",
-          [ { "Fn::If" : [
-              "ElbPrefixProvided",
-              { "Ref" : "09ElbPrefix" },
-              { "Ref" : "AWS::StackName" }
-            ]},
-            "-pcf-ssh-elb"
-          ]
-        ] },
+         "LoadBalancerName": "aripka-demopcf-ssh-elb"
+	      ,
         "Listeners": [
           {
             "InstancePort": "2222",
