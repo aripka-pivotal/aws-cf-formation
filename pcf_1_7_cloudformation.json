@@ -1,15 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Cloudformation template for configuring Pivotal Cloud Foundry on AWS",
-  "Conditions": {
-    "CreateRDS": {
-      "Fn::And":[
-        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "04RdsDBName"}, "" ]}]},
-        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "05RdsUsername"}, "" ]}]},
-        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "06RdsPassword"}, "" ]}]}
-      ]
-    }
-  },
   "Parameters": {
     "03OpsManagerIngress": {
       "Type": "String",
@@ -49,6 +40,13 @@
   "Conditions": {
     "AllowHTTPTrafficOnELB": {
       "Fn::Equals" : [{"Ref" : "10AllowHttpOnElb" }, "true"]
+    },
+    "CreateRDS": {
+      "Fn::And":[
+        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "04RdsDBName"}, "" ]}]},
+        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "05RdsUsername"}, "" ]}]},
+        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "06RdsPassword"}, "" ]}]}
+      ]
     }
   },
   "Resources": {
