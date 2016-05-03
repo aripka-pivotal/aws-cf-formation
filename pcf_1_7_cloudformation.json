@@ -1,6 +1,15 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Cloudformation template for configuring Pivotal Cloud Foundry on AWS",
+  "Conditions": {
+    "CreateRDS": {
+      "Fn::And":[
+        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "04RdsDBName"}, "" ]}]},
+        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "05RdsUsername"}, "" ]}]},
+        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "06RdsPassword"}, "" ]}]}
+      ]
+    }
+  },
   "Parameters": {
     "03OpsManagerIngress": {
       "Type": "String",
@@ -242,18 +251,23 @@
       "Value": { "Fn::GetAtt" : [ "OpsManStack", "Outputs.PcfPublicSubnetAvailabilityZone" ] }
     },
     "PcfRdsAddress": {
+      "Condition": "CreateRDS",
       "Value": { "Fn::GetAtt": [ "OpsManStack", "Outputs.PcfRdsAddress" ]}
     },
     "PcfRdsPort": {
+      "Condition": "CreateRDS",
       "Value": {"Fn::GetAtt": [ "OpsManStack", "Outputs.PcfRdsPort" ]}
     },
     "PcfRdsUsername": {
+      "Condition": "CreateRDS",
       "Value": {"Fn::GetAtt": [ "OpsManStack", "Outputs.PcfRdsUsername" ]}
     },
     "PcfRdsPassword": {
+      "Condition": "CreateRDS",
       "Value": {"Fn::GetAtt": [ "OpsManStack", "Outputs.PcfRdsPassword" ]}
     },
     "PcfRdsDBName": {
+      "Condition": "CreateRDS",
       "Value": {"Fn::GetAtt": [ "OpsManStack", "Outputs.PcfRdsDBName" ]}
     }
   }
