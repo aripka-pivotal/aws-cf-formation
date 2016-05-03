@@ -9,7 +9,6 @@
     },
     "04RdsDBName": {
       "Type": "String",
-      "Default": "bosh",
       "Description": "BOSH database name"
     },
     "05RdsUsername": {
